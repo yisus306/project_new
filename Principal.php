@@ -297,6 +297,7 @@ $datos = $Conexion->query($sql);
                                     <thead>
                                       <tr>
                                         <th>uuid</th>
+                                        <th>Imagen</th>
                                         <th>Nombre</th>
                                         <th>Apellidos</th>
                                         <th>Email</th>
@@ -309,15 +310,15 @@ $datos = $Conexion->query($sql);
                                   
                                     <?php
                                   
-                                                  $sql = "SELECT * FROM users;";
-                                                  $resultado = $Conexion->query($sql);
-                                  
-                                                  while($mostrar = mysqli_fetch_array($resultado)){
-                                        
-                                                  ?>
+                                      $sql = "SELECT * FROM users;";
+                                      $resultado = $Conexion->query($sql);
+                      
+                                      while($mostrar = mysqli_fetch_array($resultado)){                              
+                                      ?>
                                   
                                                   <tr>
                                                      <td><?php echo $mostrar['uuid_user']; ?></td>
+                                                     <td><img class="user-avatar rounded-circle" src="data:imagejpg;base64, <?php echo base64_encode($mostrar['imagen']) ?>" style="width: 40px; height:40px"/></td>
                                                       <td><?php echo $mostrar['nombre']; ?></td>
                                                       <td><?php echo $mostrar['apellidos']; ?></td>
                                                       <td><?php echo $mostrar['email']; ?></td>

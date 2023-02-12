@@ -29,6 +29,62 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
 
    <style>
+    #contenedor_imagen {
+			position: relative;
+		}
+
+		#vista_previa {
+			display: block;
+			margin-top: 10px;
+			border-radius: 50%;
+			width: 200px;
+			height: 200px;
+		}
+
+		#overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			display: none;
+			z-index: 999;
+		}
+
+		#contenedor_camara {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			border-radius: 50%;
+			width: 200px;
+			height: 200px;
+			overflow: hidden;
+		}
+
+		#contenedor_camara video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		#contenedor_camara button {
+			position: absolute;
+			right: 10px;
+			bottom: 10px;
+			background-color: rgba(0, 0, 0, 0.5);
+			color: white;
+			padding: 10px;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		#contenedor_camara button:hover {
+			background-color: rgba(0, 0, 0, 0.7);
+		}
     #weatherWidget .currentDesc {
         color: #ffffff!important;
     }
@@ -62,11 +118,58 @@
         #cellPaiChart{
             height: 160px;
         }
+        input[type="text"], input[type="file"] {
+          padding: 10px;
+          font-size: 16px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          margin-bottom: 20px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        #tomar_foto {
+          display: none;
+        }
+
+        #row_center {
+          width: 100%;
+          position: relative;
+          }
+
+        .sin_imagen {
+          position: relative;
+          height: 200px;
+          width: 200px;
+          background-color: #ccc;
+          border-radius: 50%;
+          margin: 20px auto;
+          overflow: hidden;
+          cursor: pointer;
+        }
+
+        #row_center:hover #tomar_foto {
+          display: block;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          margin: 10px;
+          padding: 10px;
+          background-color: #4CAF50;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+
+        #row_center:hover #tomar_foto:hover {
+          background-color: #3e8e41;
+        }
 
     </style>
 </head>
-
-<body>
+  <body> 
     <!-- Left Panel -->
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
@@ -193,7 +296,7 @@
                         </div>
 
                         <div class="dropdown for-message">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button  class="btn btn-secondary dropdown-toggle"type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-envelope"></i>
                                 <span class="count bg-primary">4</span>
                             </button>
@@ -271,50 +374,54 @@
                             <div class="card-body">
                                 <h4 style=" text-align: center;" class="box-title">Agregar un usuario </h4>
 
+                                <!-- Formulario nuevo usuario -->
+                                <form name="formulario" enctype="multipart/form-data" action="Create.php" method="post"> 
 
-                                <form name="formulario" action="Create.php" method="Post"> 
-
+                                  <div class="form-group">
+                                      <label for="foto">Foto:</label>
+                                      <div id="contenedor_imagen">
+                                        <input type="file" name="foto" id="foto" accept="image/jpeg,image/png" >
+                                      </div>
+                                      <div id="row_center">
+                                        <img class="sin_imagen" id="vista_previa" src="#" alt="Vista previa de la imagen">
+                                        <input type="hidden" id="imagen_src" name="imagen_src" value="" />
+                                        <button type="button" id="tomar_foto">Tomar foto</button>
+                                      </div>
+                                    </div>
+                                    <label class="form-label">Nombre(s):</label>
+                                    <input type="Text" class="form-control" name="nombre" placeholder="Nombre(s)" required>
+                                    <label class="form-label">Apellido(s):</label>
+                                    <input type="Text" class="form-control" name="apellidos" placeholder="Apellido(s)" required>
+                                    <label class="form-label">Email:</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                                    <label class="form-label">Contraseña:</label>
+                                    <input type="Text" class="form-control" name="password" placeholder="Contraseña" required>
                                     <div class="form-group">
-                                                        <label class="form-label">Nombre(s):</label>
-                                                        <input type="Text" class="form-control" name="nombre" placeholder="Nombre(s)" required>
-                                                        <label class="form-label">Apellido(s):</label>
-                                                        <input type="Text" class="form-control" name="apellidos" placeholder="Apellido(s)" required>
-                                                        <label class="form-label">Email:</label>
-                                                        <input type="email" class="form-control" name="email" placeholder="Email" required>
-                                                        <label class="form-label">Contraseña:</label>
-                                                        <input type="Text" class="form-control" name="password" placeholder="Contraseña" required>
-                                                        <div class="form-group">
-                                                        <label class="form-label">Rol:</label>
-                                                          <select name="rol" id="rol" class="form-control" required>
-                                                              <option value='1'>Usuario</option>
-                                                              <option value='2'>SuperUsuario</option>
-                                                              <option value='3'>Moderador</option>
-                                                              <option value='4'>Administrador</option>
-                                                          </select>
-                                                          <label class="form-label">Status:</label>
-                                                          <select name="status" id="status" class="form-control" required>
-                                                              <option value='Activo'>Activo</option>
-                                                              <option value='Inactivo'>Inactivo</option>
-
-                                                          </select>
-                                                        </div>
-                                                        <br>
-                                                        <button name="btnagregar" type="submit" class="btn btn-success btntamaño">  Agregar Alumno  </button>
-                                
-                                                        <!--<a href="TablaAlumnos.php"><button name="btncancelar" type="submit" class="btn btn-danger btntamaño" >  Cancelar alta  </button></a>-->
-                                                    </div>
-                                    </form>
-
-
-
-
-
-                            </div>
-                            
+                                      <label class="form-label">Rol:</label>
+                                      <select name="rol" id="rol" class="form-control" required>
+                                          <option value='1'>Usuario</option>
+                                          <option value='2'>SuperUsuario</option>
+                                          <option value='3'>Moderador</option>
+                                          <option value='4'>Administrador</option>
+                                      </select>
+                                      <label class="form-label">Status:</label>
+                                      <select name="status" id="status" class="form-control" required>
+                                          <option value='Activo'>Activo</option>
+                                          <option value='Inactivo'>Inactivo</option>
+                                      </select>
+                                    </div>
+                                    <br>
+                                    <button name="btnagregar" type="submit" class="btn btn-success btntamaño">  Agregar Alumno  </button> 
+                                      <!--<a href="TablaAlumnos.php"><button name="btncancelar" type="submit" class="btn btn-danger btntamaño" >  Cancelar alta  </button></a>-->
+                                  </div>
+                                </form>
+                              <div id="overlay">
+                                <div id="contenedor_camara">
+                                  <video id="camara" autoplay></video>
+                                  <button type="button" id="tomar_foto_camara">Tomar foto</button>
                                 </div>
-                            
+                              </div>
                             </div> <!-- /.row -->
-                            <div class="card-body"></div>
                         </div>
                     </div><!-- /# column -->
                 </div>
@@ -563,6 +670,70 @@
             });
             // Bar Chart #flotBarChart End
         });
+
+    let foto = document.getElementById('foto');
+		let vista_previa = document.getElementById('vista_previa');
+    let imagen_src = document.getElementById('imagen_src');
+		let tomar_foto = document.getElementById('tomar_foto');
+		let overlay = document.getElementById('overlay');
+		let contenedor_camara = document.getElementById('contenedor_camara');
+		let tomar_foto_camara = document.getElementById('tomar_foto_camara');
+		let video = document.getElementById('camara');
+		let canvas = document.createElement('canvas');
+		canvas.width = 200;
+		canvas.height = 200;
+
+		foto.addEventListener('change', function() {
+			if (this.files && this.files[0]) {
+				let lector = new FileReader();
+				lector.onload = function(e) {
+					vista_previa.src = e.target.result;
+				}
+				lector.readAsDataURL(this.files[0]);
+			}
+		});
+
+		tomar_foto.addEventListener('click', function() {
+			overlay.style.display = 'block';
+			navigator.mediaDevices.getUserMedia({video: true})
+				.then(function(stream) {
+					video.srcObject = stream;
+				})
+				.catch(function(error) {
+					console.error(error);
+				});
+		});
+
+		tomar_foto_camara.addEventListener('click', function() {
+			canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+			vista_previa.src = canvas.toDataURL();
+			video.srcObject.getTracks().forEach(function(track) {
+				track.stop();
+			});
+			overlay.style.display = 'none';
+		});
+
+		overlay.addEventListener('click', function() {
+			video.srcObject.getTracks().forEach(function(track) {
+				track.stop();
+			});
+			overlay.style.display = 'none';
+		});
+
+    // Crear una nueva instancia de MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'src') {
+          imagen_src.value = mutation.target.src;
+        }
+      });
+    });
+
+    // Configurar las opciones de MutationObserver
+    const config = { attributes: true };
+
+    // Iniciar la observaci�n de la etiqueta img
+    observer.observe(vista_previa, config);
     </script>
 </body>
 </html>

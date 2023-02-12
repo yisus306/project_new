@@ -1,22 +1,23 @@
 <?php 
 
-include_once('Conexion.php');
 
+  include_once('Conexion.php');
 
-$nombre = $_POST['nombre'];
-$apellidos = $_POST['apellidos'];
-$email= $_POST['email'];
-$password = $_POST['password'];
-$rol = $_POST['rol'];
-$status = $_POST['status'];
+  $imagenSrc = $_POST['imagen_src'];
+  $imagen = file_get_contents($imagenSrc);
 
-$sql = "insert into users (nombre,apellidos,email,password,rol,status) 
-values('$nombre','$apellidos','$email','$password','$rol','$status');";
+  $nombre = $_POST['nombre'];
+  $apellidos = $_POST['apellidos'];
+  $email= $_POST['email'];
+  $password = $_POST['password'];
+  $rol = $_POST['rol'];
+  $status = $_POST['status'];
 
-if ($Conexion->query($sql)){
-            header('location: Principal.php');
-            }
-         
- 
+  $image = mysqli_real_escape_string($Conexion, $imagen);
+  $sql = "insert into users (nombre,apellidos,email,password,rol,status, imagen) values('$nombre','$apellidos','$email','$password','$rol','$status', '$image');";
+
+  if ($Conexion->query($sql)){
+    header('location: Principal.php');
+  }
 
 ?>
