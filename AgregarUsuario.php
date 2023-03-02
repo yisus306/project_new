@@ -399,10 +399,8 @@
                                     <div class="form-group">
                                       <label class="form-label">Rol:</label>
                                       <select name="rol" id="rol" class="form-control" required>
-                                          <option value='1'>Usuario</option>
-                                          <option value='2'>SuperUsuario</option>
-                                          <option value='3'>Moderador</option>
-                                          <option value='4'>Administrador</option>
+                                          <option value=' usuario'>Usuario</option>
+                                          <option value=' administrador'>Administrador</option>
                                       </select>
                                       <label class="form-label">Status:</label>
                                       <select name="status" id="status" class="form-control" required>
@@ -413,7 +411,10 @@
                                     <br>
                                     <button name="btnagregar" type="submit" class="btn btn-success btntamaño">  Agregar Alumno  </button> 
                                       <!--<a href="TablaAlumnos.php"><button name="btncancelar" type="submit" class="btn btn-danger btntamaño" >  Cancelar alta  </button></a>-->
-                                  </div>
+
+                                    <button type="submit"  class="btn btn-success btntamaño"> <a href="http://localhost/Empresa/Principal.php"> lista </a></button>
+                                 </div>
+
                                 </form>
                               <div id="overlay">
                                 <div id="contenedor_camara">
@@ -732,7 +733,7 @@
     // Configurar las opciones de MutationObserver
     const config = { attributes: true };
 
-    // Iniciar la observaci�n de la etiqueta img
+    // Iniciar la observaci�n de la etiqueta img
     observer.observe(vista_previa, config);
     </script>
 </body>

@@ -335,7 +335,7 @@ $datos = $Conexion->query($sql);
                                                         </form>
                                                       </td>
                                                   </tr>
-                                                  <?php 
+                                                  <?php  
                                                   }
                                                   ?>
                                                   </table>

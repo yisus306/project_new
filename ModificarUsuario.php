@@ -6,12 +6,12 @@ if(isset($_GET['id'])){
   include_once('Conexion.php');
   $id= $_GET['id'];
 
-  $sql = "SELECT * FROM users WHERE id=$id;";
+  $sql = "SELECT * FROM users WHERE uuid_user=$id;";
 
 
   $datos = $Conexion->query($sql);
   if ($fila = mysqli_fetch_array($datos)){
-        $id = $fila['id'];
+        $id = $fila['uuid_user'];
         $nombre = $fila['nombre'];
         $apellidos =$fila['apellidos'];
         $email = $fila['email'];
@@ -318,9 +318,7 @@ if(isset($_GET['id'])){
                                                         <label class="form-label">Rol:</label>
                                                           <select name="rol" id="rol" class="form-control" required value="<?php echo $rol;?>">
                                                               <option value='1'>Usuario</option>
-                                                              <option value='2'>SuperUsuario</option>
-                                                              <option value='3'>Moderador</option>
-                                                              <option value='4'>Administrador</option>
+                                                              <option value='2'>Administrador</option>
                                                           </select>
                                                           <label class="form-label">Status:</label>
                                                           <select name="status" id="status" class="form-control" required value="<?php echo $status;?>">
